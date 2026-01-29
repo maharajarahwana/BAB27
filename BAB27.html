@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BAB27</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>BAB1</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Latihan Kosakata</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .card {
+    background: white;
+    padding: 30px;
+    width: 400px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  input {
+    width: 90%;
+    padding: 8px;
+    margin-top: 15px;
+  }
+  button {
+    margin-top: 20px;
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+  .result {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .wrong { color: red; }
+  .correct { color: green; }
+  ol { text-align:left; max-height:400px; overflow:auto; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2 id="question"></h2>
+  <input type="text" id="answerInput" placeholder="Tulis jawaban di sini">
+  <br>
+  <button id="nextBtn">Selanjutnya</button>
+</div>
+
+<script>
+let questions = [
+{ soal: "기념일", jawaban: "hari peringatan" },
+{ soal: "첫인상", jawaban: "kesan pertama" },
+{ soal: "-는", jawaban: "yang" },
+{ soal: "환갑", jawaban: "ultah ke 60" },
+{ soal: "회갑", jawaban: "ultah ke 60" },
+{ soal: "-아/어 봤다", jawaban: "pernah" },
+{ soal: "칠순", jawaban: "ultah ke 70" },
+{ soal: "국경일", jawaban: "hari libur nasional" },
+{ soal: "특별한 날", jawaban: "hari-hari khusus" },
+{ soal: "삼일절", jawaban: "hari gerakan 1 maret" },
+{ soal: "광복절", jawaban: "hari kemerdekaan" },
+{ soal: "개천절", jawaban: "hari pendirian korea" },
+{ soal: "한글날", jawaban: "hari hangul" },
+{ soal: "근로자의 날", jawaban: "hari buruh nasional" },
+{ soal: "어린이 날", jawaban: "hari anak" },
+{ soal: "어버이 날", jawaban: "hari orang tua" },
+{ soal: "결혼", jawaban: "pernikahan" },
+{ soal: "결혼식", jawaban: "upacara pernikahan" },
+{ soal: "축의금", jawaban: "uang hadiah pernikahan" },
+{ soal: "초대하다", jawaban: "mengundang" },
+{ soal: "초대를 받다", jawaban: "menerima undangan" },
+{ soal: "참석하다", jawaban: "menghadiri" },
+{ soal: "축하하다", jawaban: "mengucapkan selamat" },
+{ soal: "금반지", jawaban: "cincin emas" },
+{ soal: "기념하다", jawaban: "memperingati" },
+{ soal: "국기를 달다", jawaban: "mengibarkan bendera negara" },
+{ soal: "돌잔치", jawaban: "pesta ultah pertama bayi" },
+{ soal: "행사를 하다", jawaban: "mengadakan acara" },
+{ soal: "집들이", jawaban: "pesta pindah rumah" },
+{ soal: "꽃을 달아 드리다", jawaban: "memberikan bunga (simbol penghormatan)" },
+{ soal: "정하다", jawaban: "ditentukan" },
+{ soal: "마음을 전하다", jawaban: "menyampaikan rasa terima kasih" },
+{ soal: "역사적", jawaban: "sejarah" },
+{ soal: "선물을 주다 / 드리다", jawaban: "memberikan hadiah" },
+{ soal: "경축하다", jawaban: "merayakan" },
+{ soal: "이날", jawaban: "hari ini" },
+{ soal: "만세", jawaban: "merdeka" },
+{ soal: "어리다", jawaban: "muda / kecil" },
+{ soal: "해당하다", jawaban: "terkait" },
+{ soal: "조카", jawaban: "keponakan" },
+{ soal: "기쁨", jawaban: "kebahagiaan" },
+{ soal: "따로", jawaban: "secara terpisah" },
+{ soal: "염원하다", jawaban: "berharap" },
+{ soal: "겉옷", jawaban: "pakaian luar" },
+{ soal: "조의금", jawaban: "uang belasungkawa" },
+{ soal: "독립", jawaban: "kemerdekaan" },
+{ soal: "장례식", jawaban: "upacara pemakaman" },
+];
+
+// Acak soal
+questions = questions.sort(() => Math.random() - 0.5);
+
+let index = 0;
+let score = 0;
+let userAnswers = [];
+
+const questionEl = document.getElementById("question");
+const answerInput = document.getElementById("answerInput");
+const nextBtn = document.getElementById("nextBtn");
+const card = document.querySelector(".card");
+
+function showQuestion() {
+  questionEl.textContent = "Soal " + (index + 1) + ": " + questions[index].soal;
+  answerInput.value = "";
+  answerInput.focus();
+}
+
+nextBtn.addEventListener("click", () => {
+  const userAnswer = answerInput.value.trim().toLowerCase();
+  userAnswers[index] = userAnswer; // simpan jawaban sesuai index
+
+  if (userAnswer === questions[index].jawaban) {
+    score++;
+  }
+
+  index++;
+  if (index < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+});
+
+function showResult() {
+  let answerList = "";
+  questions.forEach((q, i) => {
+    if (userAnswers[i] === q.jawaban) {
+      answerList += `<li>${q.soal} = <span class="correct">${q.jawaban}</span></li>`;
+    } else {
+      answerList += `<li>${q.soal} = <span class="correct">${q.jawaban}</span><br>
+                     Jawaban kamu: <span class="wrong">${userAnswers[i] || "(kosong)"}</span></li>`;
+    }
+  });
+
+  card.innerHTML = `
+    <h2>Hasil</h2>
+    <p class="result">Nilai: ${score} / ${questions.length}</p>
+    <hr>
+    <p>Kunci Jawaban:</p>
+    <ol>${answerList}</ol>
+  `;
+}
+
+showQuestion();
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
